@@ -25,7 +25,7 @@ p1=
 dd %>% 
   ggplot() +
   geom_sf(aes(fill = anc))+
-   viridis::scale_fill_viridis() + ggtitle('A')
+    scale_fill_gradient(low = "#ff7f0e", high = "#274625") + ggtitle('A')
 
 #division plot
 division <- bangladesh::get_map("division")
@@ -44,7 +44,7 @@ p2=
   bb_division %>% 
   ggplot() +
   geom_sf(aes(fill = anc))+
-   viridis::scale_fill_viridis() + ggtitle('B')
+    scale_fill_gradient(low = "#ff7f0e", high = "#274625") + ggtitle('B')
 
 library(patchwork)
 p1 | p2
