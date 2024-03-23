@@ -1,0 +1,50 @@
+district <- bangladesh::get_map("district")
+colnames(district) <- tolower(colnames(district))
+
+
+#district plot
+bb_district = import("/Users/macintosh/Desktop/R/BDmics.xls") %>% 
+  mutate(anc=as.numeric(anc)) %>%  
+  group_by(district, division) %>% 
+  summarise(anc=mean(anc)) %>%
+  mutate(district = recode(district,
+                           "Barishal" = "Barisal",
+                           "Bogura" = "Bogra",
+                           "Brahmanbaria" = "Brahamanbaria",
+                           "Chapai Nawabganj" = "Nawabganj",
+                           "Chattogram" = "Chittagong",
+                           "Cumilla" = "Comilla",
+                           "Jashore" = "Jessore",
+                           "Kishoregonj" = "Kishoreganj",
+                           "Narayangonj" = "Narayanganj",
+                           "Netrokona" = "Netrakona")) 
+
+dd=dplyr::left_join(district, bb_district, by = c("district"))
+
+p1= 
+dd %>% 
+  ggplot() +
+  geom_sf(aes(fill = anc))+
+   viridis::scale_fill_viridis() + ggtitle('A')
+
+#division plot
+division <- bangladesh::get_map("division")
+
+bb_division = bd %>% mutate(anc=as.numeric(anc)) %>%  
+  group_by(division) %>% 
+  summarise(anc=mean(anc))%>%
+  mutate(division = recode(division,
+                           "Barishal" = "Barisal",
+                           "Chattogram" = "Chittagong",
+                           "Mymenshing"="Mymensingh"))
+
+bb_division= dplyr::left_join(division, bb_division,by = c("Division"='division'))
+
+p2= 
+  bb_division %>% 
+  ggplot() +
+  geom_sf(aes(fill = anc))+
+   viridis::scale_fill_viridis() + ggtitle('B')
+
+library(patchwork)
+p1 | p2
