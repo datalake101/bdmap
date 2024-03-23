@@ -3,7 +3,7 @@ colnames(district) <- tolower(colnames(district))
 
 
 #district plot
-bb_district = import("/Users/macintosh/Desktop/R/BDmics.xls") %>% 
+bb_district = import("https://raw.githubusercontent.com/datalake101/bdmap/main/BDmap.csv") %>% 
   mutate(anc=as.numeric(anc)) %>%  
   group_by(district, division) %>% 
   summarise(anc=mean(anc)) %>%
